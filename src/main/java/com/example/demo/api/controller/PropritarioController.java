@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.model.Proprietario;
 import com.example.demo.domain.repository.ProprietarioRepository;
+import com.example.demo.domain.service.RegistroProprietarioService;
 
 import lombok.AllArgsConstructor;
 
@@ -26,7 +27,10 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/proprietarios")
 public class PropritarioController {
 	
-	@Autowired
+
+	private final RegistroProprietarioService registroProprietarioService;
+	
+	
 	private final ProprietarioRepository proprietarioRepository;
 	
 
@@ -50,7 +54,8 @@ public class PropritarioController {
 								//Request serializa e desserializa o q for inserido em Json
 								//coloca como está no corpo da requisição
 	public Proprietario adicionar(@RequestBody Proprietario proprietario) {
-		return proprietarioRepository.save(proprietario);
+		return registroProprietarioService.salvar(proprietario);
+		//return proprietarioRepository.save(proprietario);
 		
 	}
 	
@@ -61,7 +66,7 @@ public class PropritarioController {
 			return ResponseEntity.notFound().build();
 		}
 		proprietario.setId(proprietarioId);
-		Proprietario proprietarioAtualizado = proprietarioRepository.save(proprietario);
+		Proprietario proprietarioAtualizado = registroProprietarioService.salvar(proprietario);
 		
 		return ResponseEntity.ok(proprietarioAtualizado);
 	}
@@ -73,7 +78,8 @@ public class PropritarioController {
 			
 		}
 		
-		 proprietarioRepository.deleteById(proprietarioId);
+		//proprietarioRepository.deleteById(proprietarioId);
+		 registroProprietarioService.excluir(proprietarioId);
 		 return ResponseEntity.noContent().build();
 	}
 	
