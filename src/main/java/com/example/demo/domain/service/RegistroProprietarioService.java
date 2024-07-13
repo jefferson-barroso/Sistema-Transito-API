@@ -3,6 +3,7 @@ package com.example.demo.domain.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.domain.exception.NegocioException;
 import com.example.demo.domain.model.Proprietario;
 import com.example.demo.domain.repository.ProprietarioRepository;
 
@@ -18,6 +19,13 @@ public class RegistroProprietarioService {
 	
 	@Transactional //caso alguma operação no BD de errado, rollback
 	public Proprietario salvar(Proprietario proprietario) {
+		boolean emailEmUso = proprietarioRepository.findByEmail(proprietario.getEmail()).
+			filter(p->!p.equals(proprietario)).isPresent();
+		
+		if (emailEmUso) {
+			throw new NegocioException("Ja existe cadastro pra esse email!");
+		}
+		
 		return proprietarioRepository.save(proprietario);
 	}
 	

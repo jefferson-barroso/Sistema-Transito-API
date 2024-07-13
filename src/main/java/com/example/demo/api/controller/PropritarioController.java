@@ -2,7 +2,6 @@ package com.example.demo.api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +18,7 @@ import com.example.demo.domain.model.Proprietario;
 import com.example.demo.domain.repository.ProprietarioRepository;
 import com.example.demo.domain.service.RegistroProprietarioService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 
@@ -51,16 +51,13 @@ public class PropritarioController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-								//Request serializa e desserializa o q for inserido em Json
-								//coloca como está no corpo da requisição
-	public Proprietario adicionar(@RequestBody Proprietario proprietario) {
+	public Proprietario adicionar(@Valid @RequestBody Proprietario proprietario) {
 		return registroProprietarioService.salvar(proprietario);
-		//return proprietarioRepository.save(proprietario);
 		
 	}
 	
 	@PutMapping("/{proprietarioId}")
-	public ResponseEntity<Proprietario> atualizar(@PathVariable Long proprietarioId, @RequestBody Proprietario proprietario){
+	public ResponseEntity<Proprietario> atualizar( @PathVariable Long proprietarioId, @Valid @RequestBody Proprietario proprietario){
 		
 		if(!proprietarioRepository.existsById(proprietarioId)) {
 			return ResponseEntity.notFound().build();
@@ -78,7 +75,6 @@ public class PropritarioController {
 			
 		}
 		
-		//proprietarioRepository.deleteById(proprietarioId);
 		 registroProprietarioService.excluir(proprietarioId);
 		 return ResponseEntity.noContent().build();
 	}
