@@ -17,6 +17,12 @@ public class RegistroProprietarioService {
 	
 	private final ProprietarioRepository proprietarioRepository;
 	
+	public Proprietario buscar(Long proprietarioId) {
+		//resolvendo questão do null no retorno da requisição nos nomes de um proprietario; 
+		return  proprietarioRepository.findById(proprietarioId)
+				.orElseThrow(() -> new NegocioException("Proprietário não encontrado!"));
+	}
+	
 	@Transactional //caso alguma operação no BD de errado, rollback
 	public Proprietario salvar(Proprietario proprietario) {
 		boolean emailEmUso = proprietarioRepository.findByEmail(proprietario.getEmail()).
