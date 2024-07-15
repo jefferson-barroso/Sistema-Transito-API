@@ -18,6 +18,7 @@ import com.example.demo.domain.model.Veiculo;
 import com.example.demo.domain.repository.VeiculoRepository;
 import com.example.demo.domain.service.RegistroVeiculoService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -44,7 +45,7 @@ public class VeiculoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Veiculo cadastrar(@RequestBody Veiculo veiculo) {
+	public Veiculo cadastrar(@Valid @RequestBody Veiculo veiculo) {
 		return registroVeiculoService.cadastrar(veiculo);
 		
 	}
