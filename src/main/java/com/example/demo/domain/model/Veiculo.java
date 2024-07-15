@@ -1,6 +1,6 @@
 package com.example.demo.domain.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import com.example.demo.domain.validation.ValidationGroups;
 import com.example.demo.enums.StatusVeiculo;
@@ -57,8 +57,8 @@ public class Veiculo {
 	private StatusVeiculo status; 
 	
 	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDateTime dataCadastro; 
+	private OffsetDateTime dataCadastro; 
 	
 	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDateTime dataApreensao; 
+	private OffsetDateTime dataApreensao; 
 }
