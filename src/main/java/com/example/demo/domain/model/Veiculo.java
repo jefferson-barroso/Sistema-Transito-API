@@ -1,6 +1,6 @@
 package com.example.demo.domain.model;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import com.example.demo.domain.validation.ValidationGroups;
 import com.example.demo.enums.StatusVeiculo;
@@ -36,7 +36,6 @@ public class Veiculo {
 	private Long id;
 	
 	@Valid
-	@ConvertGroup(from = Default.class, to = ValidationGroups.proprietarioId.class)
 	@NotNull
 	@ManyToOne
 	//@JoinColumn(name="proprietario_id")
@@ -57,8 +56,8 @@ public class Veiculo {
 	private StatusVeiculo status; 
 	
 	@JsonProperty(access = Access.READ_ONLY)
-	private OffsetDateTime dataCadastro; 
+	private LocalDateTime dataCadastro; 
 	
 	@JsonProperty(access = Access.READ_ONLY)
-	private OffsetDateTime dataApreensao; 
+	private LocalDateTime dataApreensao; 
 }

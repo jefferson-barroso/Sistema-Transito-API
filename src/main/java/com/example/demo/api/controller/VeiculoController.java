@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.domain.exception.NegocioException;
+import com.example.demo.api.assembler.VeiculoAssembler;
+import com.example.demo.api.model.VeiculoDTO;
 import com.example.demo.domain.model.Veiculo;
 import com.example.demo.domain.repository.VeiculoRepository;
 import com.example.demo.domain.service.RegistroVeiculoService;
+import com.example.demo.model.Input.VeiculoInput;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -30,23 +31,30 @@ public class VeiculoController {
 	
 	private RegistroVeiculoService registroVeiculoService;
 	
+	private VeiculoAssembler veiculoAssembler;
+	
 	@GetMapping
-	public List<Veiculo> listar(){
-		return veiculoRepository.findAll();
+	public List<VeiculoDTO> listar(){
+		return veiculoAssembler.toColletionModel(veiculoRepository.findAll());
 	}
 	
 	@GetMapping("/{veiculoId}")
-	public ResponseEntity<Veiculo> buscar(@PathVariable Long veiculoId) {
-		return veiculoRepository.findById(veiculoId).
-				map(ResponseEntity::ok).
-				orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<VeiculoDTO> buscar(@PathVariable Long veiculoId) {
+		return veiculoRepository.findById(veiculoId)
+				.map(veiculo -> veiculoAssembler.toDTO(veiculo))
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
 		
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Veiculo cadastrar(@Valid @RequestBody Veiculo veiculo) {
-		return registroVeiculoService.cadastrar(veiculo);
+	public VeiculoDTO cadastrar(@Valid @RequestBody VeiculoInput veiculoInput) {
+		
+		Veiculo novoVeiculo = veiculoAssembler.toEntity(veiculoInput);
+		Veiculo veiculoCadastrado = registroVeiculoService.cadastrar(novoVeiculo);
+		
+		return veiculoAssembler.toDTO(veiculoCadastrado);
 		
 	}
 	
