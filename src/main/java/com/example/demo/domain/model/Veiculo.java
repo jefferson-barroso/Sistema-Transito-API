@@ -59,10 +59,10 @@ public class Veiculo {
 	private StatusVeiculo status; 
 	
 	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDateTime dataCadastro; 
+	private OffsetDateTime dataCadastro; 
 	
 	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDateTime dataApreensao; 
+	private OffsetDateTime dataApreensao; 
 	
 	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL)
 	private List<Autuacao> autoacoes = new ArrayList<>();
@@ -75,37 +75,30 @@ public class Veiculo {
 	}
 	
 	public void apreender() {
-		
-		if (estaApreendido()) {
-			
-			throw new NegocioException("Este veiculo já está apreendido.");
-		}
-		
-		setStatus(StatusVeiculo.APRENDIDO);
-		setDataApreensao(OffsetDateTime.now());
-		
-	}
-	
-	public void removerApreensao() {
-		if (naoEstaApreendido()) {
-			throw new NegocioException("Veiculo não está apreendido!"); 
-		}
-		
-		setStatus(StatusVeiculo.REGULAR);
-		setDataApreensao(null);
-			
+        if (estaApreendido()) {
+            throw new NegocioException("Veículo já se encontra apreendido");
+        }
 
-		
-	}
-	
-	public boolean estaApreendido() {
-			return StatusVeiculo.APRENDIDO.equals(getStatus());
-		}
-	
-	public boolean naoEstaApreendido() {
-		return !estaApreendido();
-	}
-		
+        setStatus(StatusVeiculo.APRENDIDO);
+        setDataApreensao(OffsetDateTime.now());
+    }
+
+    public void removerApreensao() {
+        if (naoEstaApreendido()) {
+            throw new NegocioException("Veículo não está apreendido");
+        }
+
+        setStatus(StatusVeiculo.REGULAR);
+        setDataApreensao(null);
+    }
+
+    public boolean estaApreendido() {
+        return StatusVeiculo.APRENDIDO.equals(getStatus());
+    }
+
+    public boolean naoEstaApreendido() {
+        return !estaApreendido();
+    }
 	
 	
 }

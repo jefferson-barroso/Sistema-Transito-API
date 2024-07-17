@@ -35,7 +35,8 @@ public class AutuacaoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public AutuacaoDTO registrar(@PathVariable Long veiculoId, @Valid @RequestBody AutuacaoInput autuacaoInput) {
+	public AutuacaoDTO registrar(@PathVariable Long veiculoId,
+								@Valid @RequestBody AutuacaoInput autuacaoInput) {
 		
 		Autuacao novaAutuacao = autuacaoAssembler.toEntity(autuacaoInput); 
 		Autuacao autuacaoRegistrada = registroAutuacaoService.registrar(veiculoId, novaAutuacao);
