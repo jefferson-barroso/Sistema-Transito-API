@@ -1,6 +1,6 @@
 
 
-# Projeto de Estudo - Sistema de Autuações de Veículos
+# Projeto de Estudo - Sistema de Transito 
 
 Este é um projeto desenvolvido para estudo pessoal, focado na criação de um sistema simples de autuações de veículos utilizando Spring Boot.
 
