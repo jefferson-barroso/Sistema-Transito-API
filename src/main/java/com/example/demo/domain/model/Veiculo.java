@@ -1,13 +1,15 @@
 package com.example.demo.domain.model;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.example.demo.domain.validation.ValidationGroups;
 import com.example.demo.enums.StatusVeiculo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -15,11 +17,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.groups.ConvertGroup;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,4 +62,15 @@ public class Veiculo {
 	
 	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime dataApreensao; 
+	
+	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL)
+	private List<Autuacao> autoacoes = new ArrayList<>();
+	
+	public Autuacao adicionarAutuacao(Autuacao autuacao) {
+		autuacao.setDataOcorrencia(OffsetDateTime.now());
+		autuacao.setVeiculo(this);
+		getAutoacoes().add(autuacao);
+		return autuacao; 
+	}
+	
 }
