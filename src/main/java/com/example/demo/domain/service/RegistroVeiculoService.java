@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.domain.exception.EntidadeNaoEncontradaException;
 import com.example.demo.domain.exception.NegocioException;
 import com.example.demo.domain.model.Proprietario;
 import com.example.demo.domain.model.Veiculo;
@@ -24,7 +25,7 @@ public class RegistroVeiculoService {
 	
 	public Veiculo buscar(Long veiculoId) {
 		return veiculoRepository.findById(veiculoId)
-				.orElseThrow(()->new NegocioException("Veiculo não encontrado"));
+				.orElseThrow(()->new EntidadeNaoEncontradaException("Veiculo não encontrado"));
 	}
 	
 	@Transactional

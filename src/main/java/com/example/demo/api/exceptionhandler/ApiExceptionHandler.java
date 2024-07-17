@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.example.demo.domain.exception.EntidadeNaoEncontradaException;
 import com.example.demo.domain.exception.NegocioException;
 
 import lombok.AllArgsConstructor;
@@ -49,6 +50,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(NegocioException.class)
 	public ResponseEntity<String> handleNegocio(NegocioException e){
 		ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+		problemDetail.setTitle(e.getMessage());
+		return problemDetail;
+		
+	}
+	
+	@ExceptionHandler(EntidadeNaoEncontradaException.class)
+	public ProblemDetail handleEntidadeNaoEncontrada(NegocioException e){
+		ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
 		problemDetail.setTitle(e.getMessage());
 		return problemDetail;
 		
