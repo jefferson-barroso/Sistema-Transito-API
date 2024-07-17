@@ -1,6 +1,7 @@
 package com.example.demo.domain.service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +10,6 @@ import com.example.demo.domain.exception.EntidadeNaoEncontradaException;
 import com.example.demo.domain.exception.NegocioException;
 import com.example.demo.domain.model.Proprietario;
 import com.example.demo.domain.model.Veiculo;
-import com.example.demo.domain.repository.ProprietarioRepository;
 import com.example.demo.domain.repository.VeiculoRepository;
 import com.example.demo.enums.StatusVeiculo;
 
@@ -53,4 +53,6 @@ public class RegistroVeiculoService {
 		
 		return veiculoRepository.save(novoVeiculo);
 	}
+	
+
 }

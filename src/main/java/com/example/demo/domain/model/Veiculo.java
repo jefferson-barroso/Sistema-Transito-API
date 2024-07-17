@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.domain.exception.NegocioException;
 import com.example.demo.enums.StatusVeiculo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -72,5 +73,39 @@ public class Veiculo {
 		getAutoacoes().add(autuacao);
 		return autuacao; 
 	}
+	
+	public void apreender() {
+		
+		if (estaApreendido()) {
+			
+			throw new NegocioException("Este veiculo já está apreendido.");
+		}
+		
+		setStatus(StatusVeiculo.APRENDIDO);
+		setDataApreensao(OffsetDateTime.now());
+		
+	}
+	
+	public void removerApreensao() {
+		if (naoEstaApreendido()) {
+			throw new NegocioException("Veiculo não está apreendido!"); 
+		}
+		
+		setStatus(StatusVeiculo.REGULAR);
+		setDataApreensao(null);
+			
+
+		
+	}
+	
+	public boolean estaApreendido() {
+			return StatusVeiculo.APRENDIDO.equals(getStatus());
+		}
+	
+	public boolean naoEstaApreendido() {
+		return !estaApreendido();
+	}
+		
+	
 	
 }
